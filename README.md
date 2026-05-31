@@ -49,3 +49,79 @@ El servidor arranca en http://localhost:3000
 - POST /pagos - Registrar pago
 - PUT /pagos/:id - Actualizar pago
 - DELETE /pagos/:id - Eliminar pago
+
+## Base de datos
+
+La base de datos es SQLite y se guarda en el archivo lavado.db.
+
+### Sentencias SQL
+
+CREATE TABLE IF NOT EXISTS ROL (
+  idRol INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre_rol TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS USUARIO (
+  idUsuario INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre_usuario TEXT NOT NULL,
+  contrasena TEXT NOT NULL,
+  idRol INTEGER NOT NULL,
+  FOREIGN KEY (idRol) REFERENCES ROL(idRol)
+);
+
+CREATE TABLE IF NOT EXISTS CLIENTE (
+  idCliente INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre TEXT NOT NULL,
+  telefono TEXT NOT NULL,
+  direccion TEXT
+);
+
+CREATE TABLE IF NOT EXISTS CATEGORIA_SERVICIO (
+  idCategoria INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre_categoria TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS SERVICIO (
+  idServicio INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre_servicio TEXT NOT NULL,
+  descripcion TEXT,
+  precio_base REAL NOT NULL,
+  idCategoria INTEGER NOT NULL,
+  FOREIGN KEY (idCategoria) REFERENCES CATEGORIA_SERVICIO(idCategoria)
+);
+
+CREATE TABLE IF NOT EXISTS CITA (
+  idCita INTEGER PRIMARY KEY AUTOINCREMENT,
+  fecha_hora TEXT NOT NULL,
+  estado TEXT DEFAULT Pendiente,
+  idCliente INTEGER NOT NULL,
+  idUsuario INTEGER NOT NULL,
+  FOREIGN KEY (idCliente) REFERENCES CLIENTE(idCliente),
+  FOREIGN KEY (idUsuario) REFERENCES USUARIO(idUsuario)
+);
+
+CREATE TABLE IF NOT EXISTS DETALLE_CITA (
+  idCita INTEGER NOT NULL,
+  idServicio INTEGER NOT NULL,
+  cantidad INTEGER DEFAULT 1,
+  precio_aplicado REAL NOT NULL,
+  PRIMARY KEY (idCita, idServicio),
+  FOREIGN KEY (idCita) REFERENCES CITA(idCita),
+  FOREIGN KEY (idServicio) REFERENCES SERVICIO(idServicio)
+);
+
+CREATE TABLE IF NOT EXISTS PAGO (
+  idPago INTEGER PRIMARY KEY AUTOINCREMENT,
+  fecha_pago TEXT NOT NULL,
+  monto_total REAL NOT NULL,
+  metodo_pago TEXT NOT NULL,
+  idCita INTEGER NOT NULL,
+  FOREIGN KEY (idCita) REFERENCES CITA(idCita)
+);
+
+### Datos de ejemplo
+
+El script npm run seed inserta:
+- 3 roles, 4 usuarios, 5 clientes
+- 4 categorias, 7 servicios
+- 5 citas, 5 detalles de cita, 2 pagos
