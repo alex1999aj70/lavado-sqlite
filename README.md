@@ -27,28 +27,23 @@ Construida con Node.js + Express + Better-SQLite3 usando modulos ES6 y patron DA
 
 El servidor arranca en http://localhost:3000
 
-## Endpoints
-
-- GET /clientes - Todos los clientes
-- GET /clientes/:id - Cliente por ID
-- POST /clientes - Crear cliente
-- PUT /clientes/:id - Actualizar cliente
-- DELETE /clientes/:id - Eliminar cliente
-- GET /servicios - Todos los servicios
-- GET /servicios/:id - Servicio por ID
-- POST /servicios - Crear servicio
-- PUT /servicios/:id - Actualizar servicio
-- DELETE /servicios/:id - Eliminar servicio
-- GET /citas - Todas las citas
-- GET /citas/:id - Cita por ID
-- POST /citas - Crear cita
-- PUT /citas/:id - Actualizar cita
-- DELETE /citas/:id - Eliminar cita
-- GET /pagos - Todos los pagos
-- GET /pagos/:id - Pago por ID
-- POST /pagos - Registrar pago
-- PUT /pagos/:id - Actualizar pago
-- DELETE /pagos/:id - Eliminar pago
+## Estructura del proyecto
+lavado-sqlite/
+├── server.js
+├── controller.db.js
+├── package.json
+├── .env
+├── .gitignore
+├── README.md
+└── src/
+├── seed.js
+├── models/
+│   ├── model.cliente.js
+│   ├── model.servicio.js
+│   ├── model.cita.js
+│   └── model.pago.js
+└── routes/
+└── routes.js
 
 ## Base de datos
 
@@ -56,6 +51,7 @@ La base de datos es SQLite y se guarda en el archivo lavado.db.
 
 ### Sentencias SQL
 
+```sql
 CREATE TABLE IF NOT EXISTS ROL (
   idRol INTEGER PRIMARY KEY AUTOINCREMENT,
   nombre_rol TEXT NOT NULL
@@ -93,7 +89,7 @@ CREATE TABLE IF NOT EXISTS SERVICIO (
 CREATE TABLE IF NOT EXISTS CITA (
   idCita INTEGER PRIMARY KEY AUTOINCREMENT,
   fecha_hora TEXT NOT NULL,
-  estado TEXT DEFAULT Pendiente,
+  estado TEXT DEFAULT 'Pendiente',
   idCliente INTEGER NOT NULL,
   idUsuario INTEGER NOT NULL,
   FOREIGN KEY (idCliente) REFERENCES CLIENTE(idCliente),
@@ -118,10 +114,43 @@ CREATE TABLE IF NOT EXISTS PAGO (
   idCita INTEGER NOT NULL,
   FOREIGN KEY (idCita) REFERENCES CITA(idCita)
 );
+```
 
 ### Datos de ejemplo
 
 El script npm run seed inserta:
-- 3 roles, 4 usuarios, 5 clientes
-- 4 categorias, 7 servicios
-- 5 citas, 5 detalles de cita, 2 pagos
+- 3 roles: Administrador, Empleado, Cajero
+- 4 usuarios
+- 5 clientes
+- 4 categorias de servicio
+- 7 servicios
+- 5 citas
+- 5 detalles de cita
+- 2 pagos
+
+## Endpoints
+
+Base URL: http://localhost:3000
+
+| Metodo | Endpoint        | Descripcion            |
+|--------|-----------------|------------------------|
+| GET    | /clientes       | Todos los clientes     |
+| GET    | /clientes/:id   | Cliente por ID         |
+| POST   | /clientes       | Crear cliente          |
+| PUT    | /clientes/:id   | Actualizar cliente     |
+| DELETE | /clientes/:id   | Eliminar cliente       |
+| GET    | /servicios      | Todos los servicios    |
+| GET    | /servicios/:id  | Servicio por ID        |
+| POST   | /servicios      | Crear servicio         |
+| PUT    | /servicios/:id  | Actualizar servicio    |
+| DELETE | /servicios/:id  | Eliminar servicio      |
+| GET    | /citas          | Todas las citas        |
+| GET    | /citas/:id      | Cita por ID            |
+| POST   | /citas          | Crear cita             |
+| PUT    | /citas/:id      | Actualizar cita        |
+| DELETE | /citas/:id      | Eliminar cita          |
+| GET    | /pagos          | Todos los pagos        |
+| GET    | /pagos/:id      | Pago por ID            |
+| POST   | /pagos          | Registrar pago         |
+| PUT    | /pagos/:id      | Actualizar pago        |
+| DELETE | /pagos/:id      | Eliminar pago          |
