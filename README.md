@@ -28,22 +28,23 @@ Construida con Node.js + Express + Better-SQLite3 usando modulos ES6 y patron DA
 El servidor arranca en http://localhost:3000
 
 ## Estructura del proyecto
-lavado-sqlite/
-├── server.js
-├── controller.db.js
-├── package.json
-├── .env
-├── .gitignore
-├── README.md
-└── src/
-├── seed.js
-├── models/
-│   ├── model.cliente.js
-│   ├── model.servicio.js
-│   ├── model.cita.js
-│   └── model.pago.js
-└── routes/
-└── routes.js
+
+    lavado-sqlite/
+    ├── server.js
+    ├── controller.db.js
+    ├── package.json
+    ├── .env
+    ├── .gitignore
+    ├── README.md
+    └── src/
+        ├── seed.js
+        ├── models/
+        │   ├── model.cliente.js
+        │   ├── model.servicio.js
+        │   ├── model.cita.js
+        │   └── model.pago.js
+        └── routes/
+            └── routes.js
 
 ## Base de datos
 
